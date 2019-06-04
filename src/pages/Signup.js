@@ -19,7 +19,7 @@ export default class Signup extends Component<> {
       .catch(error => this.setState({ errorMessage: error.message }))
   }
   goBack() {
-      Actions.pop();
+    Actions.login();
   }
 
   render() {
