@@ -21,6 +21,7 @@ export default class Login extends Component<> {
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
         alert("login success")
+        this.props.navigation.navigate('dashboard')
         })
       .catch(error => this.setState({ errorMessage: error.message }))
   }
