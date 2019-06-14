@@ -3,16 +3,38 @@ import {
   StyleSheet, Text, TextInput, View, Button,  TouchableOpacity
 } from 'react-native';
 import firebase from 'react-native-firebase'
-
 import Logo from '../components/Logo';
-import Form from '../components/Form';
+import {NavigationActions } from 'react-navigation';
 
-import {Actions} from 'react-native-router-flux';
 
-export default class Login extends Component<> {
+export default class Login extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.signup = this.signup.bind(this);
+
+    //this constructor is very important, if not wont be able to call other pages from Routes.js.
+
+
+}
+
+
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.navigation.navigate('Bottom');
+      }
+
+   });
+  }
   state = { email: '', password: '', errorMessage: null }
 	signup() {
-		Actions.signup()
+    this.props.navigation.navigate(NavigationActions.navigate({
+      routeName: 'Auth',
+      action: NavigationActions.navigate({ routeName: 'Signup' })
+  }))
+
 	}
   handleLogin = () => {
     const { email, password } = this.state
@@ -20,8 +42,7 @@ export default class Login extends Component<> {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
-        alert("login success")
-        this.props.navigation.navigate('dashboard')
+        this.props.navigation.navigate('Bottom');
         })
       .catch(error => this.setState({ errorMessage: error.message }))
   }
@@ -33,8 +54,8 @@ export default class Login extends Component<> {
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>}
-      <TextInput style={styles.inputBox} 
-          underlineColorAndroid='rgba(0,0,0,0)' 
+      <TextInput style={styles.inputBox}
+          underlineColorAndroid='rgba(0,0,0,0)'
           placeholder="Email"
           placeholderTextColor = "#ffffff"
           selectionColor="#fff"
@@ -43,23 +64,23 @@ export default class Login extends Component<> {
           value={this.state.email}
           onSubmitEditing={()=> this.password.focus()}
           />
-      <TextInput style={styles.inputBox} 
-          underlineColorAndroid='rgba(0,0,0,0)' 
+      <TextInput style={styles.inputBox}
+          underlineColorAndroid='rgba(0,0,0,0)'
           placeholder="Password"
           secureTextEntry={true}
           placeholderTextColor = "#ffffff"
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
           ref={(input) => this.password = input}
-          />  
+          />
        <TouchableOpacity style={styles.button}>
          <Text onPress={this.handleLogin} style={styles.buttonText}>LOGIN</Text>
-       </TouchableOpacity>  
+       </TouchableOpacity>
 				<View style={styles.signupTextCont}>
 					<Text style={styles.signupText}>Don't have an account yet?</Text>
 					<TouchableOpacity onPress={this.signup}><Text style={styles.signupButton}> Signup</Text></TouchableOpacity>
 				</View>
-			</View>	
+			</View>
 			)
 	}
 }
