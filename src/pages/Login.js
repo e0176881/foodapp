@@ -3,16 +3,38 @@ import {
   StyleSheet, Text, TextInput, View, Button,  TouchableOpacity
 } from 'react-native';
 import firebase from 'react-native-firebase'
-
 import Logo from '../components/Logo';
-import Form from '../components/Form';
+import {NavigationActions } from 'react-navigation';
 
-import {Actions} from 'react-native-router-flux';
 
-export default class Login extends Component<> {
+export default class Login extends React.Component {
+
+  constructor(props) {
+    super(props); 
+    this.signup = this.signup.bind(this); 
+
+    //this constructor is very important, if not wont be able to call other pages from Routes.js.
+    
+   
+}
+
+
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.navigation.navigate('Bottom');
+      }
+      
+   });
+  }
   state = { email: '', password: '', errorMessage: null }
 	signup() {
-		Actions.signup()
+    this.props.navigation.navigate(NavigationActions.navigate({
+      routeName: 'Auth',
+      action: NavigationActions.navigate({ routeName: 'Signup' })
+  }))
+
 	}
   handleLogin = () => {
     const { email, password } = this.state
@@ -22,7 +44,11 @@ export default class Login extends Component<> {
       .then((response) => {
 
         alert("login success")
+<<<<<<< HEAD
         this.props.navigation.navigate('addRestaurant')
+=======
+        this.props.navigation.navigate('Bottom');
+>>>>>>> 43bcb31d4543d46d975a09a6432c4f1aa82a6dd9
         })
       .catch(error => this.setState({ errorMessage: error.message }))
   }
