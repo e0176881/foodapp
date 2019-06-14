@@ -44,11 +44,7 @@ export default class Login extends React.Component {
       .then((response) => {
 
         alert("login success")
-<<<<<<< HEAD
-        this.props.navigation.navigate('addRestaurant')
-=======
         this.props.navigation.navigate('Bottom');
->>>>>>> 43bcb31d4543d46d975a09a6432c4f1aa82a6dd9
         })
       .catch(error => this.setState({ errorMessage: error.message }))
   }

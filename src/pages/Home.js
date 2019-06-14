@@ -27,8 +27,11 @@ class App extends React.Component {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Home!</Text>
         <TouchableOpacity style={styles.button}>
-          <Text onPress={this.addRestaurant} style={styles.buttonText}>Add Restaurant</Text>
           <Text onPress={this.logout} style={styles.buttonText}>LOGOUT</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button}>
+          <Text onPress={this.addRestaurant} style={styles.buttonText}>Add Restaurant</Text>
         </TouchableOpacity>
       </View>
     );

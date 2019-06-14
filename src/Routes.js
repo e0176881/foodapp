@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet,TouchableOpacity,Text, View } from 'react-native';
-import { createSwitchNavigator,createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { createSwitchNavigator, createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons'
 import firebase from 'react-native-firebase'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AuthLoadingScreen from './pages/AuthLoadingScreen';
 import AddRestaurant from './pages/AddRestaurant';
+import { NavigationActions } from 'react-navigation'
 
 class HomeScreen extends React.Component {
 
@@ -15,34 +16,49 @@ class HomeScreen extends React.Component {
     super(props);
     this.state = {
       showButton: false,
-      loginName : null
+      loginName: null
     };
-   
+
   }
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-       this.setState({showButton : true, loginName : user.email
-      })
+        this.setState({
+          showButton: true, loginName: user.email
+        })
       }
-   });
+    });
   }
-  logout = () => { firebase.auth().signOut()
-    this.props.navigation.navigate('Login')}
-  
+  logout = () => {
+    firebase.auth().signOut()
+    this.props.navigation.navigate('AddRestaurant')
+  }
+
+  addRestaurant() {
+    this.props.navigation.navigate(NavigationActions.navigate({
+      routeName: 'Auth',
+      action: NavigationActions.navigate({ routeName: 'AddRestaurant' })
+    }))
+
+  }
+
   render() {
-  
+
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Welcome,  {this.state.loginName && this.state.loginName}</Text>
-       
-        {this.state.showButton &&  <TouchableOpacity style={styles.button}>
-       
-         <Text onPress={this.logout} style={styles.buttonText}>LOGOUT</Text>
-        
-       </TouchableOpacity> 
-       }
+
+        {this.state.showButton &&
+          <TouchableOpacity style={styles.button}>
+            <Text onPress={this.addRestaurant} style={styles.buttonText}>Add Restaurant</Text>
+          </TouchableOpacity>}
+
+        <TouchableOpacity style={styles.button}>
+          <Text onPress={this.logout} style={styles.buttonText}>LOGOUT</Text>
+        </TouchableOpacity>
+
+
       </View>
     );
   }
@@ -58,25 +74,25 @@ class SettingsScreen extends React.Component {
   }
 }
 
- const AuthStack = createStackNavigator(
+const AuthStack = createStackNavigator(
   {
     Login: Login,
-		Signup: Signup,
-		AddRestaurant: AddRestaurant,
-		
+    Signup: Signup,
+    AddRestaurant: AddRestaurant,
+
   },
   {
     defaultNavigationOptions: {
       tabBarVisible: true,
-      header : null
-  
+      header: null
+
     },
-    initialRouteName : 'Login'
-        //set default to be login or signup..
+    initialRouteName: 'Login'
+    //set default to be login or signup..
   }
 );
 
- const TabNavigator = createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
@@ -109,32 +125,32 @@ class SettingsScreen extends React.Component {
     }
   });
 
-  export default createAppContainer(createSwitchNavigator(
-    {
-        AuthLoading : {screen: AuthLoadingScreen, navigationOptions: {header:null}},
-      Bottom: TabNavigator,
-      Auth: AuthStack,
-    },
-    {
-      initialRouteName: 'AuthLoading',
-    }
-  ));
-  
+export default createAppContainer(createSwitchNavigator(
+  {
+    AuthLoading: { screen: AuthLoadingScreen, navigationOptions: { header: null } },
+    Bottom: TabNavigator,
+    Auth: AuthStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  }
+));
+
 
 const styles = StyleSheet.create({
 
   button: {
-    width:300,
-    backgroundColor:'#1c313a',
-     borderRadius: 25,
-      marginVertical: 10,
-      paddingVertical: 13
+    width: 300,
+    backgroundColor: '#1c313a',
+    borderRadius: 25,
+    marginVertical: 10,
+    paddingVertical: 13
   },
   buttonText: {
-    fontSize:16,
-    fontWeight:'500',
-    color:'#ffffff',
-    textAlign:'center'
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#ffffff',
+    textAlign: 'center'
   }
-  
+
 });
