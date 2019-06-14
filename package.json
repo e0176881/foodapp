@@ -1,5 +1,5 @@
 {
-  "name": "FoodApp",
+  "name": "foodapp",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,8 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "github:react-native-community/react-native-async-storage",
+    "firebase": "^6.1.1",
     "react": "16.8.3",
-    "react-native": "0.59.8",
+    "react-native": "^0.59.9",
     "react-native-firebase": "^5.4.2",
     "react-native-router-flux": "^4.0.6"
   },
@@ -22,5 +24,17 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "description": "Ensure you have android studio , IOS and node installed",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/e0176881/foodapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/e0176881/foodapp/issues"
+  },
+  "homepage": "https://github.com/e0176881/foodapp#readme"
 }
