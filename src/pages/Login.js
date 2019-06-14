@@ -10,12 +10,12 @@ import {NavigationActions } from 'react-navigation';
 export default class Login extends React.Component {
 
   constructor(props) {
-    super(props); 
-    this.signup = this.signup.bind(this); 
+    super(props);
+    this.signup = this.signup.bind(this);
 
     //this constructor is very important, if not wont be able to call other pages from Routes.js.
-    
-   
+
+
 }
 
 
@@ -25,7 +25,7 @@ export default class Login extends React.Component {
       if (user) {
         this.props.navigation.navigate('Bottom');
       }
-      
+
    });
   }
   state = { email: '', password: '', errorMessage: null }
@@ -42,13 +42,7 @@ export default class Login extends React.Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
-
-        alert("login success")
-<<<<<<< HEAD
-        this.props.navigation.navigate('addRestaurant')
-=======
         this.props.navigation.navigate('Bottom');
->>>>>>> 43bcb31d4543d46d975a09a6432c4f1aa82a6dd9
         })
       .catch(error => this.setState({ errorMessage: error.message }))
   }
@@ -60,8 +54,8 @@ export default class Login extends React.Component {
           <Text style={{ color: 'red' }}>
             {this.state.errorMessage}
           </Text>}
-      <TextInput style={styles.inputBox} 
-          underlineColorAndroid='rgba(0,0,0,0)' 
+      <TextInput style={styles.inputBox}
+          underlineColorAndroid='rgba(0,0,0,0)'
           placeholder="Email"
           placeholderTextColor = "#ffffff"
           selectionColor="#fff"
@@ -70,23 +64,23 @@ export default class Login extends React.Component {
           value={this.state.email}
           onSubmitEditing={()=> this.password.focus()}
           />
-      <TextInput style={styles.inputBox} 
-          underlineColorAndroid='rgba(0,0,0,0)' 
+      <TextInput style={styles.inputBox}
+          underlineColorAndroid='rgba(0,0,0,0)'
           placeholder="Password"
           secureTextEntry={true}
           placeholderTextColor = "#ffffff"
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
           ref={(input) => this.password = input}
-          />  
+          />
        <TouchableOpacity style={styles.button}>
          <Text onPress={this.handleLogin} style={styles.buttonText}>LOGIN</Text>
-       </TouchableOpacity>  
+       </TouchableOpacity>
 				<View style={styles.signupTextCont}>
 					<Text style={styles.signupText}>Don't have an account yet?</Text>
 					<TouchableOpacity onPress={this.signup}><Text style={styles.signupButton}> Signup</Text></TouchableOpacity>
 				</View>
-			</View>	
+			</View>
 			)
 	}
 }
