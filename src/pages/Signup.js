@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase'
-import { StyleSheet, Text, TextInput, View, Button,  TouchableOpacity } from 'react-native'
-
+import { StyleSheet, Text, TextInput, View,  TouchableOpacity } from 'react-native'
+import {NavigationActions } from 'react-navigation'
 import Logo from '../components/Logo';
 
 
-import {Actions} from 'react-native-router-flux';
 
-export default class Signup extends Component<> {
+
+export default class Signup extends Component {
+
+  constructor(props) {
+    super(props);
+    this.goBack = this.goBack.bind(this);
+     //this constructor is very important, if not wont be able to call other pages from Routes.js.
+}
+
   state = { email: '', password: '', errorMessage: null }
 
   handleSignUp = () => {
@@ -15,12 +22,15 @@ export default class Signup extends Component<> {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(user => {alert(email + " created")
+      .then(user => {
       this.props.navigation.navigate('login')})
       .catch(error => this.setState({ errorMessage: error.message }))
   }
   goBack() {
-    Actions.login();
+    this.props.navigation.navigate(NavigationActions.navigate({
+      routeName: 'Auth',
+      action: NavigationActions.navigate({ routeName: 'Login' })
+  }))
   }
 
   render() {

@@ -3,29 +3,13 @@ import { StyleSheet,TouchableOpacity,Text, View } from 'react-native';
 import { createSwitchNavigator,createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons'
 import firebase from 'react-native-firebase'
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import AuthLoadingScreen from './pages/AuthLoadingScreen';
+import Login from './src/pages/Login';
+import Signup from './src/pages/Signup';
 
-class HomeScreen extends React.Component {
-
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showButton: false,
-      loginName : null
-    };
-   
-  }
+class App extends React.Component {
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-       this.setState({showButton : true, loginName : user.email
-      })
-      }
-   });
+    
   }
   logout = () => { firebase.auth().signOut()
     this.props.navigation.navigate('Login')}
@@ -34,14 +18,10 @@ class HomeScreen extends React.Component {
   
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Welcome,  {this.state.loginName && this.state.loginName}</Text>
-       
-        {this.state.showButton &&  <TouchableOpacity style={styles.button}>
-       
+        <Text>Home!</Text>
+        <TouchableOpacity style={styles.button}>
          <Text onPress={this.logout} style={styles.buttonText}>LOGOUT</Text>
-        
        </TouchableOpacity> 
-       }
       </View>
     );
   }
@@ -57,26 +37,21 @@ class SettingsScreen extends React.Component {
   }
 }
 
- const AuthStack = createStackNavigator(
+export const AuthStack = createStackNavigator(
   {
     Login: Login,
     Signup: Signup,
-   
   },
   {
     defaultNavigationOptions: {
       tabBarVisible: true,
-      header : null
-  
     },
-    initialRouteName : 'Login'
-        //set default to be login or signup..
   }
 );
 
- const TabNavigator = createBottomTabNavigator({
+export const TabNavigator = createBottomTabNavigator({
   Home: {
-    screen: HomeScreen,
+    screen: App,
     navigationOptions: {
       tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
@@ -109,12 +84,11 @@ class SettingsScreen extends React.Component {
 
   export default createAppContainer(createSwitchNavigator(
     {
-        AuthLoading : {screen: AuthLoadingScreen, navigationOptions: {header:null}},
       Bottom: TabNavigator,
       Auth: AuthStack,
     },
     {
-      initialRouteName: 'AuthLoading',
+      initialRouteName: 'Bottom',
     }
   ));
   
