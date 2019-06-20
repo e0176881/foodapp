@@ -56,7 +56,7 @@ class HomeScreen extends React.Component {
        }
        {this.state.showButton &&  <TouchableOpacity style={styles.button}>
        
-       <Text onPress={this.addRestaurant} style={styles.buttonText}>Add</Text>
+       <Text onPress={this.addRestaurant} style={styles.buttonText}>Add Restaurant</Text>
       
      </TouchableOpacity> 
      }
