@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
+import { NavigationActions,HeaderBackButton} from 'react-navigation';
 import firebase from 'react-native-firebase';
-import { StyleSheet, Text, TextInput, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 
 
-export default class AddRestaurant extends Component<> {
-
+export default class AddRestaurant extends React.Component {
+    static navigationOptions = ({ navigation }) => {
+        return {
+          headerLeft: (
+            <HeaderBackButton
+              onPress={() =>navigation.navigate(NavigationActions.navigate({
+                routeName: 'Bottom',
+                action: NavigationActions.navigate({ routeName: 'Home' })
+              }))}
+            />
+          )
+        };
+      }
     constructor(props) {
         super(props);
         this.state = {

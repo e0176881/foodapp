@@ -29,7 +29,8 @@ export default class AuthLoadingScreen extends React.Component {
 
     async navigateAsync() {
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {         
+           
+            if (user) {     
                 this.props.navigation.navigate('Bottom');
             }
             else{
@@ -37,7 +38,7 @@ export default class AuthLoadingScreen extends React.Component {
             }
             
          });
-     
+        
     }
 
    

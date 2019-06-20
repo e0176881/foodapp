@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
-import { createSwitchNavigator, createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import {StyleSheet,TouchableOpacity, Text, View } from 'react-native';
+import { createSwitchNavigator, createBottomTabNavigator, createAppContainer, createStackNavigator,NavigationActions} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons'
 import firebase from 'react-native-firebase'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AuthLoadingScreen from './pages/AuthLoadingScreen';
 import AddRestaurant from './pages/AddRestaurant';
-import { NavigationActions } from 'react-navigation'
+
+
 
 class HomeScreen extends React.Component {
 
@@ -18,7 +19,8 @@ class HomeScreen extends React.Component {
       showButton: false,
       loginName: null
     };
-
+    this.addRestaurant = this.addRestaurant.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -31,39 +33,38 @@ class HomeScreen extends React.Component {
     });
   }
   logout = () => {
-    firebase.auth().signOut()
-    this.props.navigation.navigate('AddRestaurant')
+   firebase.auth().signOut()
   }
 
-  addRestaurant() {
+  addRestaurant = () => {
     this.props.navigation.navigate(NavigationActions.navigate({
-      routeName: 'Auth',
+      routeName: 'App',
       action: NavigationActions.navigate({ routeName: 'AddRestaurant' })
     }))
-
   }
-
   render() {
-
+  
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>Welcome,  {this.state.loginName && this.state.loginName}</Text>
-
-        {this.state.showButton &&
-          <TouchableOpacity style={styles.button}>
-            <Text onPress={this.addRestaurant} style={styles.buttonText}>Add Restaurant</Text>
-          </TouchableOpacity>}
-
-        <TouchableOpacity style={styles.button}>
-          <Text onPress={this.logout} style={styles.buttonText}>LOGOUT</Text>
-        </TouchableOpacity>
-
-
+       
+        {this.state.showButton &&  <TouchableOpacity style={styles.button}>
+       
+         <Text onPress={this.logout} style={styles.buttonText}>LOGOUT</Text>
+        
+       </TouchableOpacity> 
+       }
+       {this.state.showButton &&  <TouchableOpacity style={styles.button}>
+       
+       <Text onPress={this.addRestaurant} style={styles.buttonText}>Add</Text>
+      
+     </TouchableOpacity> 
+     }
       </View>
     );
   }
 }
-
+  
 class SettingsScreen extends React.Component {
   render() {
     return (
@@ -73,18 +74,30 @@ class SettingsScreen extends React.Component {
     );
   }
 }
+const AppStack = createStackNavigator(
+  {
+    AddRestaurant : AddRestaurant
+  },
+
+  {
+    defaultNavigationOptions: {
+      tabBarVisible: true,
+      
+      
+    },
+    initialRouteName: 'AddRestaurant'
+    //set default 
+  }
+);
 
 const AuthStack = createStackNavigator(
   {
     Login: Login,
     Signup: Signup,
-    AddRestaurant: AddRestaurant,
-
   },
   {
     defaultNavigationOptions: {
       tabBarVisible: true,
-      header: null
 
     },
     initialRouteName: 'Login'
@@ -95,12 +108,13 @@ const AuthStack = createStackNavigator(
 const TabNavigator = createBottomTabNavigator({
   Home: {
     screen: HomeScreen,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
         <Icon name="ios-home" color={tintColor} size={24} />
-      )
-    }
+      ),
+     
+    })
   },
   Settings: {
     screen: SettingsScreen,
@@ -117,7 +131,7 @@ const TabNavigator = createBottomTabNavigator({
     order: ['Home', 'Settings'],
     //navigation for complete tab navigator
     navigationOptions: {
-      tabBarVisible: true
+      tabBarVisible: true,
     },
     tabBarOptions: {
       activeTintColor: 'red',
@@ -130,6 +144,7 @@ export default createAppContainer(createSwitchNavigator(
     AuthLoading: { screen: AuthLoadingScreen, navigationOptions: { header: null } },
     Bottom: TabNavigator,
     Auth: AuthStack,
+    App: AppStack,
   },
   {
     initialRouteName: 'AuthLoading',
