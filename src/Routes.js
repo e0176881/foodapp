@@ -6,12 +6,15 @@ import firebase from 'react-native-firebase'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AuthLoadingScreen from './pages/AuthLoadingScreen';
+import ProfileScreen from './pages/Profile';
+import RestaurantsScreen from './pages/Restaurants';
 import AddRestaurant from './pages/AddRestaurant';
+import DiscoverScreen from './pages/Discover';
 import { NavigationActions } from 'react-navigation'
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import IonIcons from 'react-native-vector-icons/Ionicons'
 
 class HomeScreen extends React.Component {
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -57,22 +60,11 @@ class HomeScreen extends React.Component {
         <TouchableOpacity style={styles.button}>
           <Text onPress={this.logout} style={styles.buttonText}>LOGOUT</Text>
         </TouchableOpacity>
-
-
       </View>
     );
   }
 }
 
-class SettingsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
-      </View>
-    );
-  }
-}
 
 const AuthStack = createStackNavigator(
   {
@@ -102,19 +94,37 @@ const TabNavigator = createBottomTabNavigator({
       )
     }
   },
-  Settings: {
-    screen: SettingsScreen,
+  Restaurants: {
+    screen: RestaurantsScreen,
     navigationOptions: {
-      tabBarLabel: 'Settings',
+      tabBarLabel: 'Restaurants',
       tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-settings" color={tintColor} size={24} />
+        <Icon name="ios-restaurant" color={tintColor} size={24} />
+      )
+    }
+  },
+  Discover: {
+    screen: DiscoverScreen,
+    navigationOptions: {
+      tabBarLabel: 'Discover',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name="md-contacts" color={tintColor} size={24} />
+      )
+    }
+  },
+  Profile: {
+    screen: ProfileScreen,
+    navigationOptions: {
+      tabBarLabel: 'Profile',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon name="md-person" color={tintColor} size={24} />
       )
     }
   }
 
 }, {//router config
     initialRouteName: 'Home',
-    order: ['Home', 'Settings'],
+    order: ['Home', 'Restaurants', 'Discover', 'Profile'],
     //navigation for complete tab navigator
     navigationOptions: {
       tabBarVisible: true
